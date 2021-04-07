@@ -16,14 +16,37 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    if(newTaskTitle.trim().length <= 0) {
+      // alert('Não é possível criar uma task sem titulo');
+      return;
+    }
+
+    const task = {
+      id: Number(`${Math.random()}`.split('.')[1]),
+      title: newTaskTitle,
+      isComplete: false
+    }
+
+    setTasks([...tasks, task]);
+    setNewTaskTitle('');
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    const taskIndex = tasks.findIndex(task => id === task.id);
+
+    if(taskIndex < 0){
+      // alert('Task não encontrada');
+      return;
+    }
+
+    tasks[taskIndex].isComplete = !tasks[taskIndex].isComplete;
+    setTasks([...tasks]);
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+    setTasks(tasks.filter(task => task.id !== id));
   }
 
   return (
